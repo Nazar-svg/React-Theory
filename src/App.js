@@ -9,42 +9,40 @@ class App extends Component {
       { name: "autor", year: 2400 },
       { name: "ardis", year: 1900 },
     ],
-    titlePage: "React components"
+    titlePage: "React components",
+    shownBike: false
   }
-  changeTitleHandler = (newTitle) => {
+  toglleBikeHandler = () => {
     this.setState({
-      titlePage: newTitle
+      shownBike: !this.state.shownBike
     })
   }
-  changeInput = (e) => {
-    this.setState({
-      titlePage: e.target.value
-    })
+  onChangeName(name, index) {
+    const bike = this.state.Bikes[index]
+    bike.name = name
+    const bikes = [...this.state.Bikes]
+    bikes[index] = bike
+    this.setState({ bikes })
   }
+
   render() {
+    let bikes = null
+    if (this.state.shownBike) {
+      bikes = this.state.Bikes.map((bike, index) => {
+        return (<Bike
+          key={index}
+          name={bike.name}
+          year={bike.year}
+          onChangeName={event => this.onChangeName(event.target.value, index)}
+        />
+        )
+      })
+    }
     return (
       <div className="App">
         <h1>{this.state.titlePage}</h1>
-        <button onClick={this.changeTitleHandler.bind(this, 'Change')}>Change Title</button>
-        <input type="text" onChange={this.changeInput} />
-        {this.state.Bikes.map((bike, index) => {
-          return (<Bike
-            key={index}
-            name={bike.name}
-            year={bike.year}
-            onClakB={() => this.changeTitleHandler(bike.name)}
-          />
-          )
-        })}
-        {/* <Bike
-        onClakB={this.changeTitleHandler.bind(this, bikes[0].name )}
-         name={bikes[0].name} 
-         year={bikes[0].year}/>
-
-        <Bike
-        onClakB={() => this.changeTitleHandler(bikes[1].name)}
-        name={bikes[1].name}
-         year={bikes[1].year}/> */}
+        <button onClick={this.toglleBikeHandler}>Toglle Bike</button>
+        {bikes}
       </div>
     );
   }
