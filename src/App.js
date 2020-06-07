@@ -1,48 +1,77 @@
 import React, { Component } from 'react';
 import './App.css';
-import Bike from './Bike/Bikes';
+import Car from './Car/Car'
 
 class App extends Component {
 
   state = {
-    Bikes: [
-      { name: "autor", year: 2400 },
-      { name: "ardis", year: 1900 },
+    cars: [
+      {name: 'Ford', year: 2018},
+      {name: 'Audi', year: 2016},
+      {name: 'Mazda', year: 2010}
     ],
-    titlePage: "React components",
-    shownBike: false
+    pageTitle: 'React components',
+    showCars: false
   }
-  toglleBikeHandler = () => {
+
+  toggleCarsHandler = () => {
     this.setState({
-      shownBike: !this.state.shownBike
+      showCars: !this.state.showCars
     })
   }
+
   onChangeName(name, index) {
-    const bike = this.state.Bikes[index]
-    bike.name = name
-    const bikes = [...this.state.Bikes]
-    bikes[index] = bike
-    this.setState({ bikes })
+    const car = this.state.cars[index]
+    car.name = name
+    const cars = [...this.state.cars]
+    cars[index] = car
+    this.setState({cars})
+  }
+
+  deleteHandler(index) {
+    const cars = this.state.cars.concat()
+    cars.splice(index, 1)
+
+    this.setState({cars})
+
   }
 
   render() {
-    let bikes = null
-    if (this.state.shownBike) {
-      bikes = this.state.Bikes.map((bike, index) => {
-        return (<Bike
-          key={index}
-          name={bike.name}
-          year={bike.year}
-          onChangeName={event => this.onChangeName(event.target.value, index)}
-        />
+    const divStyle = {
+      textAlign: 'center'
+    }
+
+    let cars = null
+
+    if (this.state.showCars) {
+      cars = this.state.cars.map((car, index) => {
+        return (
+          <Car
+            key={index}
+            name={car.name}
+            year={car.year}
+            onDelete={this.deleteHandler.bind(this, index)}
+            onChangeName={event => this.onChangeName(event.target.value, index)}
+          />
         )
       })
     }
+
     return (
-      <div className="App">
-        <h1>{this.state.titlePage}</h1>
-        <button onClick={this.toglleBikeHandler}>Toglle Bike</button>
-        {bikes}
+      <div style={divStyle}>
+        <h1>{this.state.pageTitle}</h1>
+
+        <button
+          onClick={this.toggleCarsHandler}
+        >Toggle cars</button>
+
+        <div style={{
+          width: 400,
+          margin: 'auto',
+          paddingTop: '20px'
+        }}>
+          { cars }
+        </div>
       </div>
     );
   }
