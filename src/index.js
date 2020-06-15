@@ -4,5 +4,5 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<App  title={"I like React"}/>, document.getElementById('root'));
+ReactDOM.render(<App title={'I am from props!'} />, document.getElementById('root'));
 registerServiceWorker();
